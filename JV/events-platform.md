@@ -44,7 +44,7 @@ The due date will be advised, but it will be no later than four weeks after the 
 
 Your project must meet the following criteria to be considered complete:
 
-1. The project should feature a fully documented backend API application and an Android Studio project for the frontend app.
+1. The project should feature a hosted and fully documented backend API application and an Android Studio project for the frontend app.
 2. **README Documentation** should include:
    - A summary of the project
      - (you may consider recording a **video walkthrough** of your platform, highlighting key features. Host this video on a free platform (e.g., YouTube) and include a link in your README.)
