@@ -58,6 +58,26 @@ app.post('/events', async (req: Request, res: Response) => {
   }
 });
 
+app.get('/events/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const event = await prisma.event.findUnique({
+      where: { id },
+      include: {
+        createdBy: true,
+        signups: { include: { user: true } },
+      },
+    });
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+    res.json(event);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch event' });
+  }
+});
+
 // Sign up a user for an event
 app.post('/signup', async (req: Request, res: Response) => {
   const { eventId, userEmail } = req.body;
