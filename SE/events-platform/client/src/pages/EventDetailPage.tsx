@@ -7,12 +7,15 @@ import {
 } from '@tanstack/react-query';
 import { api } from '../api/axios';
 import type { Event } from '../types';
+import Tabs from '../components/Tabs';
+import StickyActionBar from '../components/StickyActionBar';
+import SocialShare from '../components/SocialShare';
 
 export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const [email, setEmail] = useState('');
-  const [signupSuccess, setSignupSuccess] =
-    useState(false);
+  const [currentTab, setCurrentTab] =
+    useState('details');
+  const [signedUp, setSignedUp] = useState(false);
   const qc = useQueryClient();
 
   const {
@@ -21,30 +24,29 @@ export default function EventDetailPage() {
     isError,
   } = useQuery<Event>({
     queryKey: ['event', id],
-    queryFn: async () => {
-      const res = await api.get<Event>(
-        `/events/${id}`
-      );
-      return res.data;
-    },
+    queryFn: () =>
+      api
+        .get(`/events/${id}`)
+        .then((r) => r.data),
     enabled: Boolean(id),
   });
 
   const signupMutation = useMutation({
-    mutationFn: (userEmail: string) =>
+    mutationFn: (email: string) =>
       api.post('/signup', {
         eventId: id,
-        userEmail,
+        userEmail: email,
       }),
     onSuccess: () => {
       qc.invalidateQueries({
         queryKey: ['event', id],
       });
-      setSignupSuccess(true);
+      setSignedUp(true);
     },
   });
 
-  function addToGoogleCalendar(evt: Event) {
+  function addToGoogleCalendar() {
+    if (!evt) return;
     const start = new Date(evt.datetime)
       .toISOString()
       .replace(/-|:|\.\d+/g, '');
@@ -70,97 +72,91 @@ export default function EventDetailPage() {
 
   if (isLoading)
     return (
-      <div className='p-8 text-center'>
+      <div className='p-4 text-center'>
         Loading event…
       </div>
     );
   if (isError || !evt)
     return (
-      <div className='p-8 text-center text-red-600'>
+      <div className='p-4 text-center text-[var(--color-muted)]'>
         Event not found
       </div>
     );
 
+  const tabs = [
+    { id: 'details', label: 'Details' },
+    {
+      id: 'attendees',
+      label: `Attendees (${
+        evt.signups?.length || 0
+      })`,
+    },
+    { id: 'map', label: 'Map' },
+  ];
+
   return (
-    <div className='p-8 max-w-3xl mx-auto bg-white rounded-lg shadow'>
-      {/* Event info... */}
-      <h1 className='text-2xl font-bold'>
+    <div className='pt-6 pb-32 px-4 sm:px-6 md:px-0 max-w-3xl mx-auto'>
+      {/* Title & Meta */}
+      <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center sm:text-left'>
         {evt.title}
       </h1>
-      <p className='mt-2 text-gray-600'>
+      <p className='text-[var(--color-muted)] mb-4 sm:mb-6 text-center sm:text-left'>
         {new Date(evt.datetime).toLocaleString()}
       </p>
-      <p className='mt-1 text-gray-600'>
-        {evt.location}
-      </p>
-      <p className='mt-4'>{evt.description}</p>
 
-      {/* Attendees */}
-      <div className='mt-6'>
-        <h2 className='font-semibold'>
-          Attendees: {evt.signups?.length ?? 0}
-        </h2>
-        {(evt.signups ?? []).map((s) => (
-          <p
-            key={s.id}
-            className='text-sm text-gray-700'
-          >
-            • {s.user?.email ?? 'Unknown'}
-          </p>
-        ))}
+      {/* Tabs */}
+      <Tabs
+        tabs={tabs}
+        currentTab={currentTab}
+        onChange={setCurrentTab}
+      />
+
+      {/* Tab Panels */}
+      {currentTab === 'details' && (
+        <p className='mb-6'>{evt.description}</p>
+      )}
+
+      {currentTab === 'attendees' && (
+        <ul className='space-y-1 mb-6'>
+          {(evt.signups || []).map((s) => (
+            <li
+              key={s.id}
+              className='text-sm'
+            >
+              • {s.user?.email || 'Unknown'}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {currentTab === 'map' && (
+        <div className='mb-6'>
+          <iframe
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(
+              evt.location
+            )}&output=embed`}
+            className='w-full h-56 sm:h-64 rounded-[var(--radius-lg)]'
+          />
+        </div>
+      )}
+
+      {/* Centered Social Share */}
+      <div className='mt-8 flex justify-center'>
+        <SocialShare
+          url={window.location.href}
+          title={evt.title}
+        />
       </div>
 
-      {/* Signup / Confirmation UI */}
-      {signupSuccess ? (
-        <div className='mt-4 space-y-2'>
-          <p className='text-green-600'>
-            You’re all signed up!
-          </p>
-          <button
-            onClick={() =>
-              addToGoogleCalendar(evt)
-            }
-            className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'
-          >
-            Add to Google Calendar
-          </button>
-        </div>
-      ) : (
-        <form
-          className='mt-6 flex gap-2'
-          onSubmit={(e) => {
-            e.preventDefault();
-            signupMutation.mutate(email);
-          }}
-        >
-          <input
-            type='email'
-            required
-            placeholder='Your email'
-            value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-            className='flex-grow px-4 py-2 border rounded focus:outline-none focus:ring'
-          />
-          <button
-            type='submit'
-            disabled={
-              signupMutation.status === 'pending'
-            }
-            className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50'
-          >
-            {signupMutation.status === 'pending'
-              ? 'Signing up…'
-              : 'Sign up'}
-          </button>
-          {signupMutation.status === 'error' && (
-            <p className='mt-2 text-sm text-red-600'>
-              Signup failed. Try again.
-            </p>
-          )}
-        </form>
-      )}
+      {/* Sticky bottom bar */}
+      <StickyActionBar
+        event={evt}
+        signedUp={signedUp}
+        onSignUp={(email) =>
+          signupMutation.mutate(email)
+        }
+        onAddToCalendar={addToGoogleCalendar}
+      />
     </div>
   );
 }
