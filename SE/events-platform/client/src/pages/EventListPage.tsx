@@ -10,8 +10,10 @@ import { useState } from 'react';
 export default function EventListPage() {
   const [search, setSearch] =
     useState<string>('');
+
   const [category, setCategory] =
     useState<string>('All');
+
   const { data, isLoading, isError } = useQuery<
     Event[]
   >({
