@@ -2,6 +2,12 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
+import admin from 'firebase-admin';
+import serviceAccount from '../firebase-service-account.json';
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+});
 
 dotenv.config();
 
