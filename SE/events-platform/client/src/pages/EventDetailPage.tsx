@@ -11,6 +11,22 @@ import Tabs from '../components/Tabs';
 import StickyActionBar from '../components/StickyActionBar';
 import SocialShare from '../components/SocialShare';
 
+// Helper to generate a URL-safe seed from the title
+function makeSeed(str: string): string {
+  return encodeURIComponent(
+    str
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+  );
+}
+
+// Picsum fallback URL: 800×400 for detail hero
+function picsumUrl(seed: string) {
+  return `https://picsum.photos/seed/${seed}/800/400`;
+}
+
 export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [currentTab, setCurrentTab] =
@@ -30,6 +46,17 @@ export default function EventDetailPage() {
         .then((r) => r.data),
     enabled: Boolean(id),
   });
+
+  // Manage hero image src & fallback
+  const [imgSrc, setImgSrc] =
+    useState<string>('');
+  if (evt && !imgSrc) {
+    // initialize once when evt loads
+    const seed = makeSeed(evt.title);
+    setImgSrc(
+      evt.imageUrl?.trim() || picsumUrl(seed)
+    );
+  }
 
   const signupMutation = useMutation({
     mutationFn: (email: string) =>
@@ -96,6 +123,20 @@ export default function EventDetailPage() {
 
   return (
     <div className='pt-6 pb-32 px-4 sm:px-6 md:px-0 max-w-3xl mx-auto'>
+      {/* Hero Image */}
+      <div className='w-full h-56 sm:h-64 md:h-80 mb-6 overflow-hidden rounded-lg'>
+        <img
+          src={imgSrc}
+          alt={evt.title}
+          className='w-full h-full object-cover'
+          onError={() => {
+            // swap to picsum if original fails
+            const seed = makeSeed(evt.title);
+            setImgSrc(picsumUrl(seed));
+          }}
+        />
+      </div>
+
       {/* Title & Meta */}
       <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center sm:text-left'>
         {evt.title}
