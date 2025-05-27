@@ -8,17 +8,20 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import './index.css';
 import './App.css';
+import { AuthProvider } from './contexts/AuthContext';
 
 const qc = new QueryClient();
 
 createRoot(
   document.getElementById('root')!
 ).render(
-  <StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={qc}>
-        <App />
-      </QueryClientProvider>
-    </BrowserRouter>
-  </StrictMode>
+  <AuthProvider>
+    <StrictMode>
+      <BrowserRouter>
+        <QueryClientProvider client={qc}>
+          <App />
+        </QueryClientProvider>
+      </BrowserRouter>
+    </StrictMode>
+  </AuthProvider>
 );
