@@ -26,6 +26,7 @@ model Event {
   id          String   @id @default(cuid())
   title       String
   description String
+  imageUrl    String?
   location    String
   datetime    DateTime
   createdBy   User     @relation("CreatedEvents", fields: [createdById], references: [id])
