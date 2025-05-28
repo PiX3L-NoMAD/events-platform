@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   FiMenu,
   FiX,
@@ -7,8 +8,13 @@ import {
 import CategoryNav from './CategoryNav';
 import { useFilters } from '../contexts/FilterContext';
 import logo from '../assets/eventify-logo.png';
+import { useAuth } from '../contexts/AuthContext';
+import { Button } from './ui/Button';
 
 export default function Header() {
+  const { role, loading } = useAuth();
+  const navigate = useNavigate();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const { category, setCategory } = useFilters();
 
@@ -16,6 +22,8 @@ export default function Header() {
     setCategory(cat);
     setMenuOpen(false);
   }
+
+  if (loading) return <div>Loading events…</div>;
 
   return (
     <header className='fixed top-0 inset-x-0 z-50 bg-white shadow-sm'>
@@ -27,8 +35,21 @@ export default function Header() {
         <img
           src={logo}
           alt='Eventify'
-          className='h-24 md:h-48'
+          className='h-24 md:h-48 hover:cursor-pointer hover:opacity-80 transition'
+          onClick={() => navigate('/events')}
         />
+        {role === 'staff' && (
+          <div className='mb-4 text-right'>
+            <Button
+              className='bg-blue-600 text-white hover:bg-blue-700'
+              onClick={() =>
+                navigate('/events/new')
+              }
+            >
+              + Create Event
+            </Button>
+          </div>
+        )}
 
         {/* mobile: hamburger */}
         <button

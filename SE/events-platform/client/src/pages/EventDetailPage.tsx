@@ -42,7 +42,7 @@ export default function EventDetailPage() {
     queryKey: ['event', id],
     queryFn: () =>
       api
-        .get(`/events/${id}`)
+        .get(`api/events/${id}`)
         .then((r) => r.data),
     enabled: Boolean(id),
   });
@@ -60,7 +60,7 @@ export default function EventDetailPage() {
 
   const signupMutation = useMutation({
     mutationFn: (email: string) =>
-      api.post('/signup', {
+      api.post('api/signup', {
         eventId: id,
         userEmail: email,
       }),

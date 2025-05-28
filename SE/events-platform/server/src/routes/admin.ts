@@ -17,11 +17,13 @@ router.post('/assign-role', async (req, res) => {
       return res.status(400).json({ error: 'Invalid role' });
     }
     try {
-      await admin.auth().setCustomUserClaims(uid, { role });
+        await admin.auth().setCustomUserClaims(uid, { role });
+        const updatedUser = await admin.auth().getUser(uid);
+        console.log('✅ Updated custom claims:', updatedUser.customClaims);      
       return res.json({ success: true });
-    } catch (err) {
+    } catch (err: any) {
         console.error('Error setting role:', err);
-      return res.status(500).json({ error: 'Failed to set role' });
+      return res.status(500).json({ error: err.message || 'Failed to set role' });
     }
   });
   
