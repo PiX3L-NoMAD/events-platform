@@ -10,6 +10,7 @@ import SignIn from './components/SignIn';
 import Header from './components/Header';
 import { FilterProvider } from './contexts/FilterContext';
 import EventEditPage from './pages/EventEditPage';
+import EventCreatePage from './pages/EventCreatePage';
 
 export default function App() {
   return (
@@ -39,6 +40,14 @@ export default function App() {
               element={
                 <RequireStaff>
                   <EventEditPage />
+                </RequireStaff>
+              }
+            />
+            <Route
+              path='/events/new'
+              element={
+                <RequireStaff>
+                  <EventCreatePage />
                 </RequireStaff>
               }
             />

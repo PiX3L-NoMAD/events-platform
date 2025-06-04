@@ -1,17 +1,21 @@
-import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import {
+  useParams,
+  useNavigate,
+} from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import {
   useQuery,
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
 import { api } from '../api/axios';
+import { auth } from '../api/firebase';
 import type { Event } from '../types';
 import Tabs from '../components/Tabs';
-import StickyActionBar from '../components/StickyActionBar';
 import SocialShare from '../components/SocialShare';
+import { Input } from '../components/ui/Input';
+import { Button } from '../components/ui/Button';
 
-// Helper to generate a URL-safe seed from the title
 function makeSeed(str: string): string {
   return encodeURIComponent(
     str
@@ -21,18 +25,30 @@ function makeSeed(str: string): string {
       .replace(/(^-|-$)/g, '')
   );
 }
-
-// Picsum fallback URL: 800×400 for detail hero
 function picsumUrl(seed: string) {
   return `https://picsum.photos/seed/${seed}/800/400`;
+}
+function maskEmail(email: string) {
+  const [user, domain] = email.split('@');
+  return user[0] + '***@' + domain;
 }
 
 export default function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [currentTab, setCurrentTab] =
     useState('details');
   const [signedUp, setSignedUp] = useState(false);
+  const [imgSrc, setImgSrc] = useState('');
   const qc = useQueryClient();
+  const [userRole, setUserRole] = useState<
+    string | null
+  >(null);
+
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+  });
 
   const {
     data: evt,
@@ -47,30 +63,63 @@ export default function EventDetailPage() {
     enabled: Boolean(id),
   });
 
-  // Manage hero image src & fallback
-  const [imgSrc, setImgSrc] =
-    useState<string>('');
-  if (evt && !imgSrc) {
-    // initialize once when evt loads
-    const seed = makeSeed(evt.title);
-    setImgSrc(
-      evt.imageUrl?.trim() || picsumUrl(seed)
-    );
-  }
+  useEffect(() => {
+    let isMounted = true;
+
+    if (evt) {
+      const seed = makeSeed(evt.title);
+      setImgSrc(
+        evt.imageUrl?.trim() || picsumUrl(seed)
+      );
+    }
+
+    auth.currentUser
+      ?.getIdTokenResult()
+      .then((res) => {
+        if (isMounted) {
+          setUserRole(
+            typeof res.claims.role === 'string'
+              ? res.claims.role
+              : null
+          );
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [evt]);
 
   const signupMutation = useMutation({
-    mutationFn: (email: string) =>
+    mutationFn: () =>
       api.post('api/signup', {
         eventId: id,
-        userEmail: email,
+        userEmail: form.email,
+        userName: form.name,
       }),
     onSuccess: () => {
       qc.invalidateQueries({
         queryKey: ['event', id],
       });
       setSignedUp(true);
+      setForm({ name: '', email: '' });
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: () =>
+      api.delete(`/api/events/${id}`),
+    onSuccess: () => {
+      navigate('/');
+    },
+  });
+
+  function handleSignupSubmit(
+    e: React.FormEvent
+  ) {
+    e.preventDefault();
+    signupMutation.mutate();
+  }
 
   function addToGoogleCalendar() {
     if (!evt) return;
@@ -123,21 +172,19 @@ export default function EventDetailPage() {
 
   return (
     <div className='pt-6 pb-32 px-4 sm:px-6 md:px-0 max-w-3xl mx-auto'>
-      {/* Hero Image */}
       <div className='w-full h-56 sm:h-64 md:h-80 mb-6 overflow-hidden rounded-lg'>
         <img
           src={imgSrc}
           alt={evt.title}
           className='w-full h-full object-cover'
-          onError={() => {
-            // swap to picsum if original fails
-            const seed = makeSeed(evt.title);
-            setImgSrc(picsumUrl(seed));
-          }}
+          onError={() =>
+            setImgSrc(
+              picsumUrl(makeSeed(evt.title))
+            )
+          }
         />
       </div>
 
-      {/* Title & Meta */}
       <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center sm:text-left'>
         {evt.title}
       </h1>
@@ -145,29 +192,55 @@ export default function EventDetailPage() {
         {new Date(evt.datetime).toLocaleString()}
       </p>
 
-      {/* Tabs */}
+      {userRole === 'staff' && (
+        <div className='mb-6 flex flex-wrap gap-3'>
+          <Button
+            onClick={() =>
+              navigate(`/events/${id}/edit`)
+            }
+          >
+            Edit Event
+          </Button>
+          <button
+            className='text-sm text-gray-500 hover:text-red-600 underline underline-offset-4'
+            onClick={() => {
+              if (
+                confirm(
+                  'Are you sure you want to delete this event?'
+                )
+              ) {
+                deleteMutation.mutate();
+              }
+            }}
+          >
+            Delete Event
+          </button>
+        </div>
+      )}
+
       <Tabs
         tabs={tabs}
         currentTab={currentTab}
         onChange={setCurrentTab}
       />
 
-      {/* Tab Panels */}
       {currentTab === 'details' && (
         <p className='mb-6'>{evt.description}</p>
       )}
 
       {currentTab === 'attendees' && (
-        <ul className='space-y-1 mb-6'>
+        <div className='mb-6 space-y-2 text-sm'>
           {(evt.signups || []).map((s) => (
-            <li
-              key={s.id}
-              className='text-sm'
-            >
-              • {s.user?.email || 'Unknown'}
-            </li>
+            <div key={s.id}>
+              {s.user?.name || '(No name)'} —{' '}
+              {userRole === 'staff'
+                ? s.user?.email
+                : s.user?.email
+                ? maskEmail(s.user.email)
+                : 'unknown'}
+            </div>
           ))}
-        </ul>
+        </div>
       )}
 
       {currentTab === 'map' && (
@@ -181,23 +254,66 @@ export default function EventDetailPage() {
         </div>
       )}
 
-      {/* Centered Social Share */}
+      {!signedUp && (
+        <div className='mt-10 border-t pt-6'>
+          <h3 className='text-lg font-semibold mb-4 text-center'>
+            To sign up for this event, enter your
+            name and email:
+          </h3>
+          <form
+            onSubmit={handleSignupSubmit}
+            className='flex flex-col sm:flex-row sm:items-center gap-4 justify-center sm:justify-start'
+          >
+            <Input
+              type='text'
+              name='name'
+              placeholder='Your name'
+              value={form.name}
+              onChange={(e) =>
+                setForm((f) => ({
+                  ...f,
+                  name: e.target.value,
+                }))
+              }
+              required
+              className='w-full sm:w-auto'
+            />
+            <Input
+              type='email'
+              name='email'
+              placeholder='Your email'
+              value={form.email}
+              onChange={(e) =>
+                setForm((f) => ({
+                  ...f,
+                  email: e.target.value,
+                }))
+              }
+              required
+              className='w-full sm:w-auto'
+            />
+            <Button
+              type='submit'
+              className='whitespace-nowrap w-full sm:w-auto'
+            >
+              Sign Up
+            </Button>
+          </form>
+        </div>
+      )}
+
       <div className='mt-8 flex justify-center'>
+        <Button onClick={addToGoogleCalendar}>
+          Add to Google Calendar
+        </Button>
+      </div>
+
+      <div className='mt-4 flex justify-center'>
         <SocialShare
           url={window.location.href}
           title={evt.title}
         />
       </div>
-
-      {/* Sticky bottom bar */}
-      <StickyActionBar
-        event={evt}
-        signedUp={signedUp}
-        onSignUp={(email) =>
-          signupMutation.mutate(email)
-        }
-        onAddToCalendar={addToGoogleCalendar}
-      />
     </div>
   );
 }
