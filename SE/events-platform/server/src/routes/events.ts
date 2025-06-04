@@ -43,7 +43,15 @@ router.post('/', verifyToken, async (req: Request, res: Response) => {
     
     const { title, description, location, datetime } = req.body;
     const user = req.user;
-
+    await prisma.user.upsert({
+      where: { id: user.uid },
+      update: {},
+      create: {
+        id: user.uid,
+        email: user.email || '', // fallback if no email
+        role: user.role === 'staff' ? 'STAFF' : 'ATTENDEE',
+      },
+    });
   try {
     const event = await prisma.event.create({
       data: {
