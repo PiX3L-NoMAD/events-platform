@@ -302,11 +302,13 @@ export default function EventDetailPage() {
         </div>
       )}
 
-      <div className='mt-8 flex justify-center'>
-        <Button onClick={addToGoogleCalendar}>
-          Add to Google Calendar
-        </Button>
-      </div>
+      {signedUp && (
+        <div className='mt-8 flex justify-center'>
+          <Button onClick={addToGoogleCalendar}>
+            Add to Google Calendar
+          </Button>
+        </div>
+      )}
 
       <div className='mt-4 flex justify-center'>
         <SocialShare
