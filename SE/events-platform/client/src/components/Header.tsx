@@ -10,6 +10,8 @@ import { useFilters } from '../contexts/FilterContext';
 import logo from '../assets/eventify-logo.png';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/Button';
+import { signOut } from 'firebase/auth';
+import { auth } from '../api/firebase';
 
 export default function Header() {
   const { role, loading } = useAuth();
@@ -38,18 +40,35 @@ export default function Header() {
           className='h-24 md:h-48 hover:cursor-pointer hover:opacity-80 transition'
           onClick={() => navigate('/events')}
         />
-        {role === 'staff' && (
-          <div className='mb-4 text-right'>
+        <div className='hidden md:flex items-center gap-3'>
+          {role === 'staff' ? (
+            <>
+              <Button
+                className='bg-blue-600 text-white hover:bg-blue-700'
+                onClick={() =>
+                  navigate('/events/new')
+                }
+              >
+                Create Event
+              </Button>
+              <Button
+                className='bg-gray-200 text-gray-800 hover:bg-gray-300'
+                onClick={async () => {
+                  await signOut(auth);
+                  navigate('/events');
+                }}
+              >
+                Log out
+              </Button>
+            </>
+          ) : (
             <Button
-              className='bg-blue-600 text-white hover:bg-blue-700'
-              onClick={() =>
-                navigate('/events/new')
-              }
+              onClick={() => navigate('/signin')}
             >
-              + Create Event
+              Staff Portal
             </Button>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* mobile: hamburger */}
         <button
@@ -87,18 +106,53 @@ export default function Header() {
 
       {/* dropdown panel */}
       {menuOpen && (
-        <div
-          className='
+        <div className='p-4 space-y-2 md:hidden'>
+          {role === 'staff' ? (
+            <>
+              <Button
+                className='w-full bg-gray-200 text-gray-800 hover:bg-gray-300'
+                onClick={() => {
+                  navigate('/events/new');
+                  setMenuOpen(false);
+                }}
+              >
+                Create Event
+              </Button>
+              <Button
+                className='w-full bg-gray-200 text-gray-800 hover:bg-gray-300'
+                onClick={async () => {
+                  await signOut(auth);
+                  navigate('/events');
+                  setMenuOpen(false);
+                }}
+              >
+                Log out
+              </Button>
+            </>
+          ) : (
+            <Button
+              className='w-full bg-gray-200 text-gray-800 hover:bg-gray-300'
+              onClick={() => {
+                navigate('/signin');
+                setMenuOpen(false);
+              }}
+            >
+              Staff Portal
+            </Button>
+          )}
+        </div>
+      )}
+      <div
+        className='
           bg-white border-t border-[var(--color-muted-light)] shadow-sm
           md:absolute md:top-full md:left-0 md:w-full
         '
-        >
-          <CategoryNav
-            value={category}
-            onChange={handleCategory}
-          />
-        </div>
-      )}
+      >
+        <CategoryNav
+          value={category}
+          onChange={handleCategory}
+        />
+      </div>
     </header>
   );
 }
