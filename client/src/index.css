@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+:root {
+  --color-primary: #222222;
+  --color-accent: #1db954;
+  --color-muted: #777777;
+  --color-muted-light: #cccccc;
+  --radius-lg: 1rem;
+}
+
+@layer components {
+  /* Primary button */
+  .btn-primary {
+    @apply bg-[var(--color-accent)] text-white font-semibold rounded-[var(--radius-lg)] px-4 py-2 focus:outline-none focus:ring;
+  }
+
+  /* Event card container */
+  .event-card {
+    @apply relative bg-white border border-gray-200 rounded-[var(--radius-lg)] overflow-hidden hover:shadow-lg focus:outline-none focus:ring;
+  }
+
+  /* Date badge in corner */
+  .date-badge {
+    @apply absolute top-2 left-2 bg-[var(--color-primary)] text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-semibold;
+  }
+}
