@@ -77,7 +77,7 @@ export default function EventListPage() {
               navigate('/events/new')
             }
           >
-            + Create Event
+            Create Event
           </Button>
         </div>
       )}

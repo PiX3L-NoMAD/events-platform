@@ -152,17 +152,6 @@ export default function Header() {
           )}
         </div>
       )}
-      <div
-        className='
-          bg-white border-t border-[var(--color-muted-light)] shadow-sm
-          md:absolute md:top-full md:left-0 md:w-full
-        '
-      >
-        <CategoryNav
-          value={category}
-          onChange={handleCategory}
-        />
-      </div>
     </header>
   );
 }
