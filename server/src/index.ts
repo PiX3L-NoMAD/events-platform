@@ -4,10 +4,12 @@ import { PrismaClient } from '@prisma/client';
 import admin from 'firebase-admin';
 import dotenv from 'dotenv';
 import type { ServiceAccount } from 'firebase-admin';
-import serviceAccountJson from '../eventify-auth-d7118-firebase-adminsdk-fbsvc-fea411ca4f.json';
 
 dotenv.config();
-const serviceAccount = serviceAccountJson as ServiceAccount;
+
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT_KEY!
+) as ServiceAccount;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)

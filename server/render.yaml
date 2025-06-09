@@ -1,9 +1,9 @@
 services:
   - type: web
-    name: eventify-backend
+    name: eventify-events-platform
     env: node
     plan: free
-    buildCommand: npm install && npm run build && npx prisma generate
+    buildCommand: npm install && npm run build && npx prisma generate && npm run seed
     startCommand: npm start
     envVars:
       - key: NODE_ENV
