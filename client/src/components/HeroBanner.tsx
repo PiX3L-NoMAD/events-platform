@@ -6,9 +6,9 @@ export default function HeroBanner({
   onSearch: (query: string) => void;
 }) {
   return (
-    <section className='relative bg-[var(--color-primary)] text-white py-20 mb-8'>
+    <section className='relative bg-[var(--color-primary)] text-white md:py-20 md:px-10 p-20 mb-8'>
       <div className='max-w-3xl mx-auto text-center space-y-4 px-4'>
-        <h1 className='text-4xl font-bold'>
+        <h1 className='md:text-4xl text-3xl font-bold'>
           Discover Your Next Event
         </h1>
         <p className='text-lg opacity-80'>

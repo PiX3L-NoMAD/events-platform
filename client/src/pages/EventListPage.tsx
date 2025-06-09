@@ -98,11 +98,13 @@ export default function EventListPage() {
         value={category}
         onChange={handleCategory}
       />
-      <p className='text-sm text-gray-500 mb-4'>
-        Showing {filteredEvents?.length ?? 0}{' '}
-        result(s) for “{search}” in category “
-        {category}”
-      </p>
+      {hasSearched && (
+        <p className='text-sm text-gray-500 mb-4'>
+          Showing {filteredEvents?.length ?? 0}{' '}
+          result(s) for “{search}” in category “
+          {category}”
+        </p>
+      )}
       <div className='grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
         {filteredEvents?.map((evt) => (
           <EventCard

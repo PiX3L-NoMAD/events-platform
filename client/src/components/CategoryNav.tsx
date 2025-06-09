@@ -15,7 +15,7 @@ export default function CategoryNav({
   onChange: (cat: string) => void;
 }) {
   return (
-    <nav className='overflow-x-auto py-4'>
+    <nav className='overflow-x-auto scrollbar-hide py-4'>
       <ul className='inline-flex space-x-3 px-4'>
         {CATEGORIES.map((cat) => {
           const isActive = cat === value;
