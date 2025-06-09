@@ -18,6 +18,8 @@ export default function Header() {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showCategories, setShowCategories] =
+    useState(false);
   const { category, setCategory } = useFilters();
 
   function handleCategory(cat: string) {
@@ -84,11 +86,10 @@ export default function Header() {
 
         {/* md+: Categories dropdown trigger */}
         <button
-          onClick={() => setMenuOpen((o) => !o)}
-          className='
-            hidden md:flex items-center space-x-1
-            p-2 focus:outline-none focus:ring
-          '
+          onClick={() =>
+            setShowCategories((o) => !o)
+          }
+          className='hidden md:flex items-center space-x-1 p-2 focus:outline-none focus:ring'
         >
           <span className='text-[var(--color-primary)] font-medium'>
             Categories
@@ -96,13 +97,22 @@ export default function Header() {
           <FiChevronDown
             size={20}
             className={
-              menuOpen
+              showCategories
                 ? 'transform rotate-180 transition'
                 : 'transition'
             }
           />
         </button>
       </div>
+
+      {showCategories && (
+        <div className='hidden md:block bg-white border-t border-[var(--color-muted-light)] shadow-sm'>
+          <CategoryNav
+            value={category}
+            onChange={handleCategory}
+          />
+        </div>
+      )}
 
       {/* dropdown panel */}
       {menuOpen && (

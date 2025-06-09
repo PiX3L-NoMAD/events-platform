@@ -1,8 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-} from 'react';
+import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 
 interface FilterContextValue {
@@ -20,8 +16,13 @@ export function FilterProvider({
 }: {
   children: ReactNode;
 }) {
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('All');
+  const {
+    search,
+    setSearch,
+    category,
+    setCategory,
+  } = useFilters();
+
   return (
     <FilterContext.Provider
       value={{

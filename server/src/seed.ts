@@ -17,6 +17,7 @@ async function main() {
     data: [
       {
         title: 'London Jazz Festival',
+        category: 'Music',
         description: `Join us for a weekend of world-class jazz across multiple venues in London.
 Featuring headline acts, up-and-coming artists, and late-night jam sessions.
 Don’t miss our special closing concert at the Southbank Centre!`,
@@ -27,6 +28,7 @@ Don’t miss our special closing concert at the Southbank Centre!`,
       },
       {
         title: 'Tech Talks: AI in Everyday Life',
+        category: 'Talks',
         description: `A panel discussion on how artificial intelligence is reshaping our daily routines—from smart homes to personalised healthcare.
 Hear from industry experts about the ethical considerations and future prospects.
 Network with speakers and fellow tech enthusiasts afterward over drinks.`,
@@ -37,6 +39,7 @@ Network with speakers and fellow tech enthusiasts afterward over drinks.`,
       },
       {
         title: 'Sunset Kayaking on the Thames',
+        category: 'Sports',
         description: `Paddle alongside the heart of London as the sun dips below the skyline.
 All skill levels welcome—guides will teach flatwater techniques before launch.
 Finish the evening with hot cocoa and a riverside bonfire on the bank.`,
@@ -47,6 +50,7 @@ Finish the evening with hot cocoa and a riverside bonfire on the bank.`,
       },
       {
         title: 'Artisanal Bread Baking Workshop',
+        category: 'Workshops',
         description: `Learn the art of sourdough and rye in this hands-on baking class.
 Our master baker will guide you through mixing, kneading, and crust development.
 Take home your own loaf and recipes to impress at home.`,
@@ -57,6 +61,7 @@ Take home your own loaf and recipes to impress at home.`,
       },
       {
         title: 'Poetry Slam Night',
+        category: 'Workshops',
         description: `Step up to the mic or cheer from the audience at our monthly poetry slam.
 Themes this month include identity, change, and hope—bring your original work.
 Doors open at 7pm with open-mic signups before the main event begins.`,
@@ -67,6 +72,7 @@ Doors open at 7pm with open-mic signups before the main event begins.`,
       },
       {
         title: 'Silent Disco in the Park',
+        category: 'Music',
         description: `Grab your wireless headphones and dance under the stars.
 Choose between three live DJs spinning everything from disco to dubstep.
 Refreshments, glow sticks, and picnic blankets welcome—lager and soda on sale.`,
@@ -77,6 +83,7 @@ Refreshments, glow sticks, and picnic blankets welcome—lager and soda on sale.
       },
       {
         title: 'Charity Fun Run 5K',
+        category: 'Sports',
         description: `Join runners of all paces for a scenic 5K through Hyde Park.
 All proceeds go to local youth sports programs.
 Medals and post-race refreshments provided—walkers and strollers welcome!`,
@@ -87,6 +94,7 @@ Medals and post-race refreshments provided—walkers and strollers welcome!`,
       },
       {
         title: 'DIY Terrarium Workshop',
+        category: 'Workshops',
         description: `Create your own miniature green world in glass.
 We supply succulents, moss, soil, and all the tools—just bring your green thumb.
 Perfect for sprucing up your home or gifting to a friend.`,
@@ -97,6 +105,7 @@ Perfect for sprucing up your home or gifting to a friend.`,
       },
       {
         title: 'Beginner’s Salsa Class',
+        category: 'Wellness',
         description: `Get moving with our high-energy salsa lesson for complete beginners.
 Our instructor will break down basic steps and partner work.
 No partner needed—come solo or with a friend, and stay for the social dance after class.`,
@@ -107,6 +116,7 @@ No partner needed—come solo or with a friend, and stay for the social dance af
       },
       {
         title: 'London Photography Walking Tour',
+        category: 'Wellness',
         description: `Capture the hidden corners and iconic landmarks of London.
 Our pro photographer guide will share composition tips and editing tricks.
 Bring your DSLR or smartphone—limited to 12 participants for a personal experience.`,
@@ -117,6 +127,7 @@ Bring your DSLR or smartphone—limited to 12 participants for a personal experi
       },
       {
         title: 'Stand-up Comedy Open Mic',
+        category: 'Workshops',
         description: `Watch emerging comedians test new material at this friendly open-mic.
 Sign-ups at the door; slots are first-come, first-served.
 Bar open from 7pm with drink specials, show starts at 8pm sharp!`,
@@ -127,6 +138,7 @@ Bar open from 7pm with drink specials, show starts at 8pm sharp!`,
       },
       {
         title: 'Historical Pub Crawl',
+        category: 'Music',
         description: `Discover centuries-old taverns and the stories behind them.
 A guided walk through historic London pubs with tastings along the way.
 Limited to 15 people—includes a keepsake beer glass and map booklet.`,
@@ -137,6 +149,7 @@ Limited to 15 people—includes a keepsake beer glass and map booklet.`,
       },
       {
         title: 'Outdoor Cinema Night: Classic Films',
+        category: 'Talks',
         description: `Settle in under the stars for a screening of beloved classics.
 Bring your blankets and low-chairs; popcorn and snacks available for purchase.
 This month’s feature: “The Wizard of Oz.” Seating opens at sunset.`,
@@ -147,6 +160,7 @@ This month’s feature: “The Wizard of Oz.” Seating opens at sunset.`,
       },
       {
         title: 'Mindfulness Meditation Session',
+        category: 'Wellness',
         description: `Find your calm with a guided meditation in the heart of the city.
 Suitable for all levels—no prior experience needed.
 Bring a mat or towel; we’ll supply cushions and tea afterward.`,
@@ -157,6 +171,7 @@ Bring a mat or towel; we’ll supply cushions and tea afterward.`,
       },
       {
         title: 'Community Garden Planting Day',
+        category: 'Sports',
         description: `Get your hands dirty and help us revitalize the local community garden.
 Learn planting techniques from urban gardeners, and take home a herb starter kit.
 Family-friendly—kids can plant their own veggies.`,
@@ -167,6 +182,7 @@ Family-friendly—kids can plant their own veggies.`,
       },
       {
         title: 'Indie Folk Music Evening',
+        category: 'Music',
         description: `An intimate evening of acoustic performances by local folk artists.
 Enjoy homemade pies and craft ales from our pop-up kitchen.
 Limited seating—book early to reserve your spot!`,

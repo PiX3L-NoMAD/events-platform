@@ -14,6 +14,7 @@ export interface Event {
   location: string;
   datetime: string; // ISO string
   createdById: string;
+  category: string;
   imageUrl?: string; // optional if not populated
   createdBy?: User;        // optional if not populated
   signups?: Signup[];      // optional if not populated

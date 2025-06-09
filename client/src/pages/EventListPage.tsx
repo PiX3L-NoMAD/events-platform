@@ -5,35 +5,39 @@ import { EventCard } from '../components/EventCard';
 import { SkeletonCard } from '../components/SkeletonCard';
 import HeroBanner from '../components/HeroBanner';
 import CategoryNav from '../components/CategoryNav';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/Button';
+import { useFilters } from '../contexts/FilterContext';
 
 export default function EventListPage() {
   const navigate = useNavigate();
   const { role, loading } = useAuth();
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('All');
+  const {
+    search,
+    setSearch,
+    category,
+    setCategory,
+  } = useFilters();
 
   const {
     data: events,
     isLoading: queryLoading,
     isError,
   } = useQuery<Event[]>({
-    queryKey: ['events', search, category],
+    queryKey: ['events'],
     queryFn: () =>
-      api
-        .get('/api/events', {
-          params: {
-            q: search,
-            category:
-              category !== 'All'
-                ? category
-                : undefined,
-          },
-        })
-        .then((r) => r.data),
+      api.get('/api/events').then((r) => r.data),
+  });
+
+  const filteredEvents = events?.filter((evt) => {
+    const matchesCategory =
+      category === 'All' ||
+      evt.category === category;
+    const matchesSearch = evt.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    return matchesCategory && matchesSearch;
   });
 
   function handleSearch(q: string) {
@@ -82,7 +86,7 @@ export default function EventListPage() {
         onChange={handleCategory}
       />
       <div className='grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-        {events.map((evt) => (
+        {filteredEvents?.map((evt) => (
           <EventCard
             key={evt.id}
             evt={evt}

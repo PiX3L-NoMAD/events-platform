@@ -32,6 +32,7 @@ export default function EventCreatePage() {
     location: '',
     datetime: '',
     imageUrl: '',
+    category: 'Music',
   });
 
   const [imgSrc, setImgSrc] = useState('');
@@ -141,6 +142,35 @@ export default function EventCreatePage() {
             onChange={handleChange}
             placeholder='Image URL (optional)'
           />
+          <label className='block'>
+            <span className='text-sm font-medium'>
+              Category
+            </span>
+            <select
+              name='category'
+              value={form.category}
+              onChange={(e) =>
+                setForm((f) => ({
+                  ...f,
+                  category: e.target.value,
+                }))
+              }
+              required
+              className='mt-1 block w-full rounded-[var(--radius-lg)] border border-gray-300 px-4 py-2 focus:outline-none focus:ring focus:ring-[var(--color-accent)]'
+            >
+              <option value='Music'>Music</option>
+              <option value='Sports'>
+                Sports
+              </option>
+              <option value='Talks'>Talks</option>
+              <option value='Workshops'>
+                Workshops
+              </option>
+              <option value='Wellness'>
+                Wellness
+              </option>
+            </select>
+          </label>
           <Button
             type='submit'
             className='bg-blue-600 text-white hover:bg-blue-700'
