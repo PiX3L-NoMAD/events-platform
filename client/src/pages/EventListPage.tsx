@@ -18,6 +18,8 @@ export default function EventListPage() {
     setSearch,
     category,
     setCategory,
+    hasSearched,
+    setHasSearched,
   } = useFilters();
 
   const {
@@ -36,6 +38,7 @@ export default function EventListPage() {
       evt.category.toLowerCase() ===
         category.toLowerCase();
     const matchesSearch =
+      !hasSearched ||
       evt.title
         .toLowerCase()
         .includes(search.toLowerCase()) ||
@@ -50,7 +53,8 @@ export default function EventListPage() {
 
   function handleSearch(q: string) {
     setSearch(q);
-    setCategory('All'); // optional: reset to show all categories when searching
+    setHasSearched(true);
+    setCategory('All');
   }
 
   function handleCategory(cat: string) {

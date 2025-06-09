@@ -10,6 +10,8 @@ interface FilterContextValue {
   setSearch: (q: string) => void;
   category: string;
   setCategory: (c: string) => void;
+  hasSearched: boolean;
+  setHasSearched: (v: boolean) => void;
 }
 
 const FilterContext =
@@ -22,6 +24,8 @@ export function FilterProvider({
 }) {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
+  const [hasSearched, setHasSearched] =
+    useState(false);
 
   return (
     <FilterContext.Provider
@@ -30,6 +34,8 @@ export function FilterProvider({
         setSearch,
         category,
         setCategory,
+        hasSearched,
+        setHasSearched,
       }}
     >
       {children}

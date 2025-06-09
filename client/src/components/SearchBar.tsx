@@ -18,6 +18,7 @@ export default function SearchBar({
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     onSearch(value.trim());
+    setValue('');
   }
 
   return (
