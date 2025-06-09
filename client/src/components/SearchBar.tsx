@@ -24,7 +24,7 @@ export default function SearchBar({
   return (
     <form
       onSubmit={handleSubmit}
-      className='w-full max-w-xl mx-auto flex'
+      className='w-full max-w-xl mx-auto flex gap-4'
     >
       <input
         type='text'

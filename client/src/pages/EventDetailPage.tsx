@@ -171,8 +171,8 @@ export default function EventDetailPage() {
   ];
 
   return (
-    <div className='pt-6 pb-32 px-4 sm:px-6 md:px-0 max-w-3xl mx-auto'>
-      <div className='w-full h-56 sm:h-64 md:h-80 mb-6 overflow-hidden rounded-lg'>
+    <div className='pt-6 pb-32 px-4 md:px-0 max-w-3xl mx-auto'>
+      <div className='w-full h-56 md:h-80 mb-6 overflow-hidden rounded-lg'>
         <img
           src={imgSrc}
           alt={evt.title}
@@ -185,7 +185,7 @@ export default function EventDetailPage() {
         />
       </div>
 
-      <h1 className='text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-center sm:text-left'>
+      <h1 className='text-2xl md:text-4xl font-bold mb-2 text-center sm:text-left'>
         {evt.title}
       </h1>
       <p className='text-[var(--color-muted)] mb-4 sm:mb-6 text-center sm:text-left'>
@@ -262,7 +262,7 @@ export default function EventDetailPage() {
           </h3>
           <form
             onSubmit={handleSignupSubmit}
-            className='flex flex-col sm:flex-row sm:items-center gap-4 justify-center sm:justify-start'
+            className='flex flex-col sm:flex-row items-center gap-4 justify-center px-10'
           >
             <Input
               type='text'

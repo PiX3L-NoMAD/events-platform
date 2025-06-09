@@ -114,7 +114,6 @@ export default function Header() {
         </div>
       )}
 
-      {/* dropdown panel */}
       {menuOpen && (
         <div className='p-4 space-y-2 md:hidden'>
           {role === 'staff' ? (
@@ -150,6 +149,10 @@ export default function Header() {
               Staff Portal
             </Button>
           )}
+          <CategoryNav
+            value={category}
+            onChange={handleCategory}
+          />
         </div>
       )}
     </header>
