@@ -2,10 +2,9 @@
 
 Eventify is a full-stack web platform where community members can browse upcoming events, sign up to attend, and add them directly to their Google Calendar. Staff users can log in securely to create, edit, and manage events.
 
-Live site: [https://example.vercel.app](https://example.vercel.app)
-Render hosted address: https://events-platform-1hnt.onrender.com/ 
-Video walkthrough: [YouTube link](#) *(add your video walkthrough link here)*
-GitHub repo: https://github.com/PiX3L-NoMAD/events-platform
+Live site: [https://eventify-events-platform.vercel.app/](https://eventify-events-platform.vercel.app/)
+API: [https://events-platform-1hnt.onrender.com/](https://events-platform-1hnt.onrender.com/) 
+GitHub repo: https://github.com/PiX3L-NoMAD/eventify-events-platform
 
 
 ## Features
@@ -43,7 +42,7 @@ GitHub repo: https://github.com/PiX3L-NoMAD/events-platform
 **Hosting**
 
 - Frontend: Vercel
-- Backend: Render (free tier)
+- Backend: Render
 
 **Tooling**
 
