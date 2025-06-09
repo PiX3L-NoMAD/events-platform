@@ -5,3 +5,7 @@ node_modules
 dist/
 
 eventify-auth-d7118-firebase-adminsdk-fbsvc-fea411ca4f.json
+
+src/exportDevData.ts
+src/importToProd.ts
+dev-data.json
