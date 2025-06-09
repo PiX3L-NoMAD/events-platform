@@ -2,4 +2,6 @@ node_modules
 
 .env
 
+dist/
+
 eventify-auth-d7118-firebase-adminsdk-fbsvc-fea411ca4f.json
