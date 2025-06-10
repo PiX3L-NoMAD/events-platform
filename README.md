@@ -2,10 +2,9 @@
 
 Eventify is a full-stack web platform where community members can browse upcoming events, sign up to attend, and add them directly to their Google Calendar. Staff users can log in securely to create, edit, and manage events.
 
-Live site: [https://eventify-events-platform.vercel.app/](https://eventify-events-platform.vercel.app/)
-API: [https://events-platform-1hnt.onrender.com/](https://events-platform-1hnt.onrender.com/) 
-GitHub repo: https://github.com/PiX3L-NoMAD/events-platform
-
+- Live site: [https://eventify-events-platform.vercel.app/](https://eventify-events-platform.vercel.app/)
+- API: [https://events-platform-1hnt.onrender.com/](https://events-platform-1hnt.onrender.com/) 
+- GitHub repo: https://github.com/PiX3L-NoMAD/events-platform
 
 ## Features
 
@@ -79,8 +78,9 @@ Note: Staff role is assigned via Firebase custom claims. All test logins must be
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/eventify.git
-   cd eventify
+   git clone https://github.com/PiX3L-NoMAD/events-platform.git
+   cd events-platform
+   ```
 2. **Environment variables**
 
    Create a `.env` file in both the `server/` and `client/` directories.
@@ -88,14 +88,19 @@ Note: Staff role is assigned via Firebase custom claims. All test logins must be
    Example `server/.env`:
    ```env
    DATABASE_URL=postgresql://user:password@localhost:5432/eventify
-   GOOGLE_API_KEY=your_google_api_key
    ```
 
    Example `client/.env`:
    ```env
+   VITE_API_URL=https://events-platform-1hnt.onrender.com
    VITE_FIREBASE_API_KEY=your_firebase_key
    VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+   VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_sender_id
+   VITE_FIREBASE_APP_ID=your_firebase_app_id
    ```
+   ⚠️ You must manually create these .env files — they are not included in the repo.
 
 3. **Install dependencies**
    ```bash
@@ -125,3 +130,9 @@ Note: Staff role is assigned via Firebase custom claims. All test logins must be
    cd client
    npm run dev
    ```
+## Note on Accessibility
+
+- Manual keyboard navigation tested (Tab/Shift+Tab, Enter activation)
+- Screen-reader labels applied (e.g., visually hidden form labels)
+- Checked with Lighthouse (Accessibility score: 18/20)
+- Verified with WAVE for form labels and critical issues
