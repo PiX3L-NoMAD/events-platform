@@ -4,8 +4,7 @@ Eventify is a full-stack web platform where community members can browse upcomin
 
 - Live site: [https://eventify-events-platform.vercel.app/](https://eventify-events-platform.vercel.app/)
 - API: [https://events-platform-1hnt.onrender.com/](https://events-platform-1hnt.onrender.com/) 
-- GitHub repo: https://github.com/PiX3L-NoMAD/eventify-events-platform
-
+- GitHub repo: https://github.com/PiX3L-NoMAD/events-platform
 
 ## Features
 
