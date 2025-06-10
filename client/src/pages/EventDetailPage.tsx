@@ -264,7 +264,14 @@ export default function EventDetailPage() {
             onSubmit={handleSignupSubmit}
             className='flex flex-col sm:flex-row items-center gap-4 justify-center px-10'
           >
+            <label
+              htmlFor='signup-name'
+              className='sr-only'
+            >
+              Your name
+            </label>
             <Input
+              id='signup-name'
               type='text'
               name='name'
               placeholder='Your name'
@@ -278,7 +285,14 @@ export default function EventDetailPage() {
               required
               className='w-full sm:w-auto'
             />
+            <label
+              htmlFor='signup-email'
+              className='sr-only'
+            >
+              Your email
+            </label>
             <Input
+              id='signup-email'
               type='email'
               name='email'
               placeholder='Your email'

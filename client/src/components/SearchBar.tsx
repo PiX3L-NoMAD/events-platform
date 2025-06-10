@@ -26,7 +26,14 @@ export default function SearchBar({
       onSubmit={handleSubmit}
       className='w-full max-w-xl mx-auto flex gap-4'
     >
+      <label
+        htmlFor='search-input'
+        className='sr-only'
+      >
+        Search for events
+      </label>
       <input
+        id='search-input'
         type='text'
         value={value}
         onChange={(e) => setValue(e.target.value)}

@@ -72,8 +72,10 @@ export default function Header() {
           )}
         </div>
 
-        {/* mobile: hamburger */}
         <button
+          aria-label={
+            menuOpen ? 'Close menu' : 'Open menu'
+          }
           onClick={() => setMenuOpen((o) => !o)}
           className='md:hidden p-2 focus:outline-none focus:ring'
         >
@@ -84,7 +86,6 @@ export default function Header() {
           )}
         </button>
 
-        {/* md+: Categories dropdown trigger */}
         <button
           onClick={() =>
             setShowCategories((o) => !o)
